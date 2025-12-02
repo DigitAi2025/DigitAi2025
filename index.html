@@ -5,16 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DigitAI - Presencia Digital Inteligente</title>
 
-  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
 
     body {
       background: #05060a;
@@ -22,7 +16,6 @@
       overflow-x: hidden;
     }
 
-    /* === FONDO HOLOGRÁFICO ANIMADO === */
     .holo-bg {
       position: fixed;
       inset: 0;
@@ -38,7 +31,6 @@
       100% { filter: hue-rotate(25deg) blur(1px); }
     }
 
-    /* === MALLA DIGITAL === */
     .grid-bg {
       position: fixed;
       inset: 0;
@@ -54,7 +46,6 @@
       to   { transform: translateY(-60px); }
     }
 
-    /* === PARTÍCULAS DINÁMICAS === */
     .particles {
       position: fixed;
       inset: 0;
@@ -100,7 +91,6 @@
       color: #bafff3;
     }
 
-    /* BANDERAS BAJO EL SUBTÍTULO */
     .flag-switcher {
       margin-top: 25px;
       display: flex;
@@ -116,9 +106,7 @@
       box-shadow: 0 0 14px rgba(255,255,255,0.25);
     }
 
-    .flag-switcher img:hover {
-      transform: scale(1.12);
-    }
+    .flag-switcher img:hover { transform: scale(1.12); }
 
     section {
       max-width: 1100px;
@@ -159,20 +147,19 @@
   <div class="holo-bg"></div>
   <div class="grid-bg"></div>
 
-  <!-- PARTÍCULAS -->
   <div class="particles" id="particles"></div>
 
   <header>
     <h1 class="title" id="hero-title">DigitAI</h1>
     <p class="subtitle" id="hero-sub">La evolución moderna de la presencia digital para tu marca.</p>
 
-    <!-- BANDERAS DE IDIOMA -->
     <div class="flag-switcher">
       <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
       <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
     </div>
   </header>
 
+  <!-- SECCIÓN 1 -->
   <section>
     <h2 id="s1-title">Tu imagen digital es tu nueva carta de presentación</h2>
     <p id="s1-text">
@@ -180,6 +167,21 @@
     </p>
   </section>
 
+  <!-- NUEVA SECCIÓN: SERVICIOS DIGITALES -->
+  <section>
+    <h2 id="services-title">Servicios digitales</h2>
+    <p id="services-text">
+      ✔ Aumento de seguidores en todas las redes sociales<br>
+      ✔ Aumento de engagement (likes, comentarios, visitas a reels y más)<br>
+      ✔ Recuperación de cuentas en cualquier plataforma<br>
+      ✔ Paquetes mensuales personalizados según tu objetivo<br>
+      ✔ Optimización completa de perfiles<br>
+      ✔ Auditorías de branding y presencia digital<br>
+      ✔ Creación de contenido asistido con IA
+    </p>
+  </section>
+
+  <!-- SECCIÓN 2 -->
   <section>
     <h2 id="s2-title">Estrategia + Estética + Inteligencia</h2>
     <p id="s2-text">
@@ -187,6 +189,7 @@
     </p>
   </section>
 
+  <!-- SECCIÓN 3 -->
   <section>
     <h2 id="s3-title">Beneficios reales y medibles</h2>
     <p id="s3-text">
@@ -197,6 +200,7 @@
     </p>
   </section>
 
+  <!-- SECCIÓN 4 -->
   <section>
     <h2 id="s4-title">Una presencia épica que destaque</h2>
     <p id="s4-text">
@@ -206,40 +210,40 @@
 
   <footer>DigitAI © 2025 — Presencia digital inteligente.</footer>
 
-  <!-- === SCRIPT PARTICULAS + IDIOMAS === -->
   <script>
-    /* ============================
-       GENERAR MUCHAS PARTÍCULAS
-    ============================ */
+    /* PARTICULAS */
     const particleContainer = document.getElementById("particles");
     const totalParticles = 70;
 
     for (let i = 0; i < totalParticles; i++) {
       const particle = document.createElement("span");
       particle.classList.add("particle");
-
       particle.style.left = Math.random() * 100 + "%";
       particle.style.top = Math.random() * 100 + "%";
       particle.style.animationDelay = (Math.random() * 6) + "s";
-
       particleContainer.appendChild(particle);
     }
 
-    /* PARALLAX SCROLL — 70% MÁS MOVIMIENTO */
     window.addEventListener("scroll", () => {
       const value = window.scrollY * 0.02;
       particleContainer.style.transform = `translateY(${value * 1.7}px)`;
     });
 
-
-    /* ============================
-       SISTEMA DE IDIOMAS COMPLETO
-    ============================ */
+    /* TEXTOS EN ESPAÑOL E INGLÉS */
     const lang = {
       es: {
         heroSub: "La evolución moderna de la presencia digital para tu marca.",
         s1Title: "Tu imagen digital es tu nueva carta de presentación",
         s1Text: "Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.",
+        servicesTitle: "Servicios digitales",
+        servicesText:
+          "✔ Aumento de seguidores en todas las redes sociales<br>" +
+          "✔ Aumento de engagement (likes, comentarios, visitas a reels y más)<br>" +
+          "✔ Recuperación de cuentas en cualquier plataforma<br>" +
+          "✔ Paquetes mensuales personalizados según tu objetivo<br>" +
+          "✔ Optimización completa de perfiles<br>" +
+          "✔ Auditorías de branding y presencia digital<br>" +
+          "✔ Creación de contenido asistido con IA",
         s2Title: "Estrategia + Estética + Inteligencia",
         s2Text: "Publicar ya no alcanza. Hoy se trata de entender el comportamiento del usuario, optimizar contenido y conectar emocionalmente.",
         s3Title: "Beneficios reales y medibles",
@@ -252,12 +256,21 @@
         heroSub: "The modern evolution of your brand’s digital presence.",
         s1Title: "Your digital image is your new business card",
         s1Text: "People judge your brand in under 3 seconds. A sharp, professional presence instantly builds trust and authority.",
+        servicesTitle: "Digital Services",
+        servicesText:
+          "✔ Growth of followers across all social platforms<br>" +
+          "✔ Engagement boost (likes, comments, reel views & more)<br>" +
+          "✔ Account recovery on any network<br>" +
+          "✔ Monthly packages tailored to your goals<br>" +
+          "✔ Full profile optimization<br>" +
+          "✔ Branding & digital presence audits<br>" +
+          "✔ AI-assisted content creation",
         s2Title: "Strategy + Aesthetics + Intelligence",
         s2Text: "Posting isn’t enough anymore. Today it's about understanding user behavior, optimizing content, and creating emotional connection.",
         s3Title: "Real, measurable results",
         s3Text: "✔ Stronger brand authority<br>✔ Higher engagement<br>✔ Better reach and positioning<br>✔ Emotional connection",
-        s4Text: "DigitAI blends futuristic design with smooth animations to elevate your brand to the next level.",
-        s4Title: "A bold presence that stands out"
+        s4Title: "A bold presence that stands out",
+        s4Text: "DigitAI blends futuristic design with smooth animations to elevate your brand to the next level."
       }
     };
 
@@ -265,6 +278,8 @@
       document.getElementById("hero-sub").innerHTML = lang[language].heroSub;
       document.getElementById("s1-title").innerHTML = lang[language].s1Title;
       document.getElementById("s1-text").innerHTML = lang[language].s1Text;
+      document.getElementById("services-title").innerHTML = lang[language].servicesTitle;
+      document.getElementById("services-text").innerHTML = lang[language].servicesText;
       document.getElementById("s2-title").innerHTML = lang[language].s2Title;
       document.getElementById("s2-text").innerHTML = lang[language].s2Text;
       document.getElementById("s3-title").innerHTML = lang[language].s3Title;
