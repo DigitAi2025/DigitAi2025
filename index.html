@@ -1,296 +1,422 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DigitAI - Presencia Digital Inteligente</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DigitAI - Presencia Digital Inteligente</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Outfit',sans-serif;
+    background:linear-gradient(180deg,#05060a,#020204);
+    color:#e6f7f2;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
 
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  /* Background layers */
+  .holo-bg{position:fixed;inset:0;z-index:-4;background:
+    radial-gradient(circle at 20% 20%, rgba(0,224,192,0.12), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(80,160,255,0.08), transparent 40%),
+    linear-gradient(135deg,#06070d 0%,#030308 100%);
+    animation:holoMove 20s ease-in-out infinite alternate;}
+  @keyframes holoMove{0%{filter:hue-rotate(0deg) blur(0px)}100%{filter:hue-rotate(22deg) blur(1px)}}
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+  .grid-bg{position:fixed;inset:0;z-index:-3;background-image:
+    linear-gradient(rgba(0,224,192,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,224,192,0.06) 1px, transparent 1px);
+    background-size:60px 60px;animation:gridMove 14s linear infinite;opacity:0.75}
+  @keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(-60px)}}
 
-    body {
-      background: #05060a;
-      color: #e6e6e6;
-      overflow-x: hidden;
-    }
+  /* Particle canvas */
+  #particle-canvas{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-    .holo-bg {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(0,255,200,0.18), transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(0,140,255,0.18), transparent 50%),
-                  linear-gradient(135deg, #06070d 0%, #030308 100%);
-      animation: holoMove 18s ease-in-out infinite alternate;
-      z-index: -3;
-    }
+  /* Header */
+  header{max-width:1100px;margin:30px auto 10px;padding:36px 20px 8px;text-align:center}
+  .logo{width:260px;height:auto;margin:10px auto 6px;display:block;filter:drop-shadow(0 18px 40px rgba(0,224,192,0.08))}
+  .title{font-size:56px;font-weight:800;background:linear-gradient(90deg,#00e0c0,#62fff2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 28px rgba(0,224,192,0.12)}
+  .subtitle{margin-top:8px;font-size:18px;color:#c8fff5;opacity:0.95}
 
-    @keyframes holoMove {
-      0% { filter: hue-rotate(0deg) blur(0px); }
-      100% { filter: hue-rotate(25deg) blur(1px); }
-    }
+  /* flags under subtitle */
+  .flag-switcher{display:flex;justify-content:center;gap:18px;margin-top:18px}
+  .flag-switcher img{width:44px;height:auto;border-radius:6px;cursor:pointer;transition:transform .18s,box-shadow .18s;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+  .flag-switcher img:hover{transform:scale(1.12);box-shadow:0 14px 40px rgba(0,224,192,0.18)}
 
-    .grid-bg {
-      position: fixed;
-      inset: 0;
-      background-image: linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridMove 12s linear infinite;
-      z-index: -2;
-    }
+  /* sections */
+  .container{max-width:1100px;margin:30px auto;padding:0 20px}
+  section.card{background:rgba(8,12,16,0.6);border:1px solid rgba(0,224,192,0.12);border-radius:14px;padding:30px;margin:26px 0;backdrop-filter:blur(12px);box-shadow:0 12px 48px rgba(0,0,0,0.6);transition:transform .28s}
+  section.card:hover{transform:translateY(-8px)}
 
-    @keyframes gridMove {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-60px); }
-    }
+  h2{font-size:28px;color:#00e0c0;margin-bottom:12px}
+  p{color:#dff7f1;line-height:1.7;font-size:16px}
 
-    .particles {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      overflow: hidden;
-    }
+  /* services icons list */
+  .services-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
+  .service{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(0,224,192,0.03);transition:transform .22s}
+  .service:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,224,192,0.06)}
+  .svc-icon{width:40px;height:40px;flex:0 0 40px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.25);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+  .svc-title{font-weight:600;color:#e8fffb}
 
-    .particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #00e0c0;
-      border-radius: 50%;
-      opacity: 0.5;
-      box-shadow: 0 0 12px #00e0c0;
-      animation: float 6s ease-in-out infinite;
-    }
+  /* plans */
+  .plans{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:12px}
+  .plan{width:300px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));border:1px solid rgba(0,224,192,0.06);transition:transform .28s}
+  .plan:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 18px 50px rgba(0,224,192,0.12)}
+  .plan h3{color:#62fff2;margin-bottom:6px}
+  .plan p{font-size:15px;color:#def7f1}
+  .plan .price{font-size:22px;color:#00e0c0;margin-top:10px}
 
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-40px); }
-      100% { transform: translateY(0px); }
-    }
+  /* footer */
+  footer{max-width:1100px;margin:40px auto 80px;padding:22px 20px;text-align:center;color:#9fbfb7;font-size:14px}
 
-    header {
-      text-align: center;
-      padding: 150px 20px 110px;
-    }
-
-    .title {
-      font-size: 72px;
-      font-weight: 800;
-      background: linear-gradient(90deg, #00e0c0, #62fff2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 35px rgba(0,255,200,0.25);
-    }
-
-    .subtitle {
-      margin-top: 18px;
-      font-size: 24px;
-      color: #bafff3;
-    }
-
-    .flag-switcher {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 22px;
-    }
-
-    .flag-switcher img {
-      width: 48px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: 0.25s;
-      box-shadow: 0 0 14px rgba(255,255,255,0.25);
-    }
-
-    .flag-switcher img:hover { transform: scale(1.12); }
-
-    section {
-      max-width: 1100px;
-      margin: 70px auto;
-      padding: 45px;
-      background: rgba(10,15,20,0.55);
-      border: 1px solid rgba(0,255,200,0.18);
-      border-radius: 18px;
-      backdrop-filter: blur(18px);
-      box-shadow: 0 0 40px rgba(0,255,200,0.07);
-    }
-
-    h2 {
-      font-size: 34px;
-      color: #00e0c0;
-      margin-bottom: 16px;
-    }
-
-    p {
-      font-size: 18px;
-      color: #d9d9d9;
-      line-height: 1.8;
-    }
-
-    footer {
-      text-align: center;
-      padding: 70px 20px;
-      margin-top: 120px;
-      color: #888;
-      font-size: 16px;
-      border-top: 1px solid rgba(0,255,200,0.12);
-    }
-  </style>
+  @media (max-width:700px){
+    .title{font-size:40px}
+    .logo{width:200px}
+    .flag-switcher img{width:36px}
+    .plan{width:100%}
+  }
+</style>
 </head>
-
 <body>
 
-  <div class="holo-bg"></div>
-  <div class="grid-bg"></div>
+<div class="holo-bg"></div>
+<div class="grid-bg"></div>
+<canvas id="particle-canvas"></canvas>
 
-  <div class="particles" id="particles"></div>
+<header>
+  <img class="logo" id="logo-img" src="https://dummyimage.com/800x240/00e0c0/04151a.png&text=DigitAI+3D+Logo+(Placeholder)" alt="DigitAI Logo">
+  <div class="title" id="hero-title">DigitAI</div>
+  <div class="subtitle" id="hero-sub">La evolución moderna de la presencia digital para tu marca.</div>
 
-  <header>
-    <h1 class="title" id="hero-title">DigitAI</h1>
-    <p class="subtitle" id="hero-sub">La evolución moderna de la presencia digital para tu marca.</p>
+  <div class="flag-switcher" aria-hidden="false">
+    <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
+    <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
+  </div>
+</header>
 
-    <div class="flag-switcher">
-      <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
-      <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
-    </div>
-  </header>
-
-  <!-- SECCIÓN 1 -->
-  <section>
+<div class="container">
+  <section class="card" id="intro">
     <h2 id="s1-title">Tu imagen digital es tu nueva carta de presentación</h2>
-    <p id="s1-text">
-      Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.
-    </p>
+    <p id="s1-text">Hoy la gente decide en menos de 3 segundos si tu negocio transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.</p>
   </section>
 
-  <!-- NUEVA SECCIÓN: SERVICIOS DIGITALES -->
-  <section>
+  <section class="card" id="services">
     <h2 id="services-title">Servicios digitales</h2>
-    <p id="services-text">
-      ✔ Aumento de seguidores en todas las redes sociales<br>
-      ✔ Aumento de engagement (likes, comentarios, visitas a reels y más)<br>
-      ✔ Recuperación de cuentas en cualquier plataforma<br>
-      ✔ Paquetes mensuales personalizados según tu objetivo<br>
-      ✔ Optimización completa de perfiles<br>
-      ✔ Auditorías de branding y presencia digital<br>
-      ✔ Creación de contenido asistido con IA
-    </p>
+
+    <div class="services-list">
+      <div class="service">
+        <div class="svc-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2c.6 0 1.19.13 1.74.38.29.13.61.2.93.2.37 0 .72-.11 1.03-.32.51-.36 1.18-.24 1.5.28.09.16.16.34.18.53.08.62-.09 1.6-.46 2.28-.25.45-.71.89-1.26 1.36-.81.68-1.74 1.28-2.65 1.75-.74.38-1.45.68-2 .85v3.3c0 .55-.45 1-1 1H7.6c-.05 0-.1-.01-.15-.03-.42-.12-.8-.32-1.11-.59-.3-.26-.55-.58-.72-.95-.25-.55-.39-1.2-.39-1.95 0-.55.45-1 1-1h3.3c.17-.55.47-1.26.85-2 .47-.91 1.07-1.84 1.75-2.65.47-.55.87-1.01 1.36-1.26.68-.37 1.66-.54 2.28-.46.19.02.37.09.53.18.52.32.64.99.28 1.5-.21.31-.32.66-.32 1.03 0 .32.07.64.2.93.25.55.38 1.14.38 1.74z" fill="#00e0c0"/></svg>
+        </div>
+        <div>
+          <div class="svc-title" id="svc1-title">Aumento de seguidores</div>
+          <div class="svc-desc" id="svc1-desc">Crecimiento orgánico y estratégico en todas las plataformas.</div>
+        </div>
+      </div>
+
+      <div class="service">
+        <div class="svc-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 17v4h4l11-11-4-4L3 17z" fill="#62fff2"/></svg>
+        </div>
+        <div>
+          <div class="svc-title" id="svc2-title">Aumento de engagement</div>
+          <div class="svc-desc" id="svc2-desc">Likes, comentarios y vistas enfocadas en tu público objetivo.</div>
+        </div>
+      </div>
+
+      <div class="service">
+        <div class="svc-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" fill="#9b5cff"/></svg>
+        </div>
+        <div>
+          <div class="svc-title" id="svc3-title">Recuperación de cuentas</div>
+          <div class="svc-desc" id="svc3-desc">Recuperamos accesos y protegemos tus perfiles frente a suplantación.</div>
+        </div>
+      </div>
+
+      <div class="service">
+        <div class="svc-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" fill="#00e0c0"/></svg>
+        </div>
+        <div>
+          <div class="svc-title" id="svc4-title">Paquetes mensuales</div>
+          <div class="svc-desc" id="svc4-desc">Planes adaptados a tu etapa: starter, pro y elite.</div>
+        </div>
+      </div>
+
+      <div class="service">
+        <div class="svc-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v2H4zM4 10h10v2H4zM4 16h16v2H4z" fill="#62fff2"/></svg>
+        </div>
+        <div>
+          <div class="svc-title" id="svc5-title">Optimización de perfiles</div>
+          <div class="svc-desc" id="svc5-desc">Bio, highlights, CTA y estética profesional.</div>
+        </div>
+      </div>
+
+      <div class="service">
+        <div class="svc-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" fill="#ffd166" /></svg>
+        </div>
+        <div>
+          <div class="svc-title" id="svc6-title">Contenido asistido con IA</div>
+          <div class="svc-desc" id="svc6-desc">Ideas y creatividades optimizadas por IA.</div>
+        </div>
+      </div>
+
+    </div>
   </section>
 
-  <!-- SECCIÓN 2 -->
-  <section>
-    <h2 id="s2-title">Estrategia + Estética + Inteligencia</h2>
-    <p id="s2-text">
-      Publicar ya no alcanza. Hoy se trata de entender el comportamiento del usuario, optimizar contenido y conectar emocionalmente.
-    </p>
+  <section class="card" id="plans">
+    <h2>Planes</h2>
+    <div class="plans" role="list">
+      <div class="plan" role="listitem" tabindex="0">
+        <h3>Starter</h3>
+        <p>Gestión básica de perfiles + 4 posts semanales.</p>
+        <div class="price">$150 / mes</div>
+      </div>
+
+      <div class="plan" role="listitem" tabindex="0">
+        <h3>Pro</h3>
+        <p>Crecimiento + branding + 12 posts/mes + reportes.</p>
+        <div class="price">$450 / mes</div>
+      </div>
+
+      <div class="plan" role="listitem" tabindex="0">
+        <h3>Elite</h3>
+        <p>Servicio completo: estrategia, contenido premium y ads.</p>
+        <div class="price">$950 / mes</div>
+      </div>
+    </div>
   </section>
 
-  <!-- SECCIÓN 3 -->
-  <section>
-    <h2 id="s3-title">Beneficios reales y medibles</h2>
-    <p id="s3-text">
-      ✔ Mayor autoridad visual<br>
-      ✔ Más interacción<br>
-      ✔ Mejor posicionamiento<br>
-      ✔ Conexión emocional
-    </p>
+  <section class="card" id="extras">
+    <h2 id="s4-title">Beneficios reales y medibles</h2>
+    <p id="s4-text">✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional</p>
   </section>
 
-  <!-- SECCIÓN 4 -->
-  <section>
-    <h2 id="s4-title">Una presencia épica que destaque</h2>
-    <p id="s4-text">
-      DigitAI combina diseño futurista y animaciones sutiles para llevar tu imagen al próximo nivel.
-    </p>
-  </section>
+</div>
 
-  <footer>DigitAI © 2025 — Presencia digital inteligente.</footer>
+<footer>DigitAI © 2025 — Presencia digital inteligente.</footer>
 
-  <script>
-    /* PARTICULAS */
-    const particleContainer = document.getElementById("particles");
-    const totalParticles = 70;
+<script>
+/* ==========================
+   Particle canvas (JS)
+   70% stronger vertical parallax on scroll
+   lightweight, performant
+==========================*/
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let DPR = Math.min(window.devicePixelRatio || 1, 2);
+function resizeCanvas(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(window.innerWidth * DPR);
+  canvas.height = Math.floor(window.innerHeight * DPR);
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
-    for (let i = 0; i < totalParticles; i++) {
-      const particle = document.createElement("span");
-      particle.classList.add("particle");
-      particle.style.left = Math.random() * 100 + "%";
-      particle.style.top = Math.random() * 100 + "%";
-      particle.style.animationDelay = (Math.random() * 6) + "s";
-      particleContainer.appendChild(particle);
-    }
+let particles = [];
+let particleCount = Math.round(Math.max(60, Math.min(260, window.innerWidth / 5)));
 
-    window.addEventListener("scroll", () => {
-      const value = window.scrollY * 0.02;
-      particleContainer.style.transform = `translateY(${value * 1.7}px)`;
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function createParticles(){
+  particles = [];
+  for(let i=0;i<particleCount;i++){
+    particles.push({
+      x: rand(-window.innerWidth, window.innerWidth*2),
+      y: rand(-window.innerHeight, window.innerHeight*2),
+      z: rand(0.15,1.0),
+      size: rand(0.8,3.2),
+      alpha: rand(0.12,0.9),
+      vx: rand(-0.03,0.03),
+      vy: rand(-0.03,0.03)
     });
+  }
+}
+createParticles();
 
-    /* TEXTOS EN ESPAÑOL E INGLÉS */
-    const lang = {
-      es: {
-        heroSub: "La evolución moderna de la presencia digital para tu marca.",
-        s1Title: "Tu imagen digital es tu nueva carta de presentación",
-        s1Text: "Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.",
-        servicesTitle: "Servicios digitales",
-        servicesText:
-          "✔ Aumento de seguidores en todas las redes sociales<br>" +
-          "✔ Aumento de engagement (likes, comentarios, visitas a reels y más)<br>" +
-          "✔ Recuperación de cuentas en cualquier plataforma<br>" +
-          "✔ Paquetes mensuales personalizados según tu objetivo<br>" +
-          "✔ Optimización completa de perfiles<br>" +
-          "✔ Auditorías de branding y presencia digital<br>" +
-          "✔ Creación de contenido asistido con IA",
-        s2Title: "Estrategia + Estética + Inteligencia",
-        s2Text: "Publicar ya no alcanza. Hoy se trata de entender el comportamiento del usuario, optimizar contenido y conectar emocionalmente.",
-        s3Title: "Beneficios reales y medibles",
-        s3Text: "✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional",
-        s4Title: "Una presencia épica que destaque",
-        s4Text: "DigitAI combina diseño futurista y animaciones sutiles para llevar tu imagen al próximo nivel."
-      },
+let scrollY = 0, targetScrollY = 0, mouseX = 0, mouseY = 0;
+window.addEventListener('scroll', ()=>{ targetScrollY = window.scrollY || window.pageYOffset; });
+window.addEventListener('mousemove', e=>{ mouseX = (e.clientX - window.innerWidth/2)/(window.innerWidth/2); mouseY = (e.clientY - window.innerHeight/2)/(window.innerHeight/2); });
 
-      en: {
-        heroSub: "The modern evolution of your brand’s digital presence.",
-        s1Title: "Your digital image is your new business card",
-        s1Text: "People judge your brand in under 3 seconds. A sharp, professional presence instantly builds trust and authority.",
-        servicesTitle: "Digital Services",
-        servicesText:
-          "✔ Growth of followers across all social platforms<br>" +
-          "✔ Engagement boost (likes, comments, reel views & more)<br>" +
-          "✔ Account recovery on any network<br>" +
-          "✔ Monthly packages tailored to your goals<br>" +
-          "✔ Full profile optimization<br>" +
-          "✔ Branding & digital presence audits<br>" +
-          "✔ AI-assisted content creation",
-        s2Title: "Strategy + Aesthetics + Intelligence",
-        s2Text: "Posting isn’t enough anymore. Today it's about understanding user behavior, optimizing content, and creating emotional connection.",
-        s3Title: "Real, measurable results",
-        s3Text: "✔ Stronger brand authority<br>✔ Higher engagement<br>✔ Better reach and positioning<br>✔ Emotional connection",
-        s4Title: "A bold presence that stands out",
-        s4Text: "DigitAI blends futuristic design with smooth animations to elevate your brand to the next level."
-      }
-    };
+function posMod(n,m){ return ((n % m) + m) % m; }
 
-    function applyLang(language) {
-      document.getElementById("hero-sub").innerHTML = lang[language].heroSub;
-      document.getElementById("s1-title").innerHTML = lang[language].s1Title;
-      document.getElementById("s1-text").innerHTML = lang[language].s1Text;
-      document.getElementById("services-title").innerHTML = lang[language].servicesTitle;
-      document.getElementById("services-text").innerHTML = lang[language].servicesText;
-      document.getElementById("s2-title").innerHTML = lang[language].s2Title;
-      document.getElementById("s2-text").innerHTML = lang[language].s2Text;
-      document.getElementById("s3-title").innerHTML = lang[language].s3Title;
-      document.getElementById("s3-text").innerHTML = lang[language].s3Text;
-      document.getElementById("s4-title").innerHTML = lang[language].s4Title;
-      document.getElementById("s4-text").innerHTML = lang[language].s4Text;
-    }
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  scrollY += (targetScrollY - scrollY) * 0.12;
+  const cx = canvas.width/2;
+  const cy = canvas.height/2 + scrollY * DPR * -0.06; // small camera shift
 
-    document.getElementById("switch-es").onclick = () => applyLang("es");
-    document.getElementById("switch-en").onclick = () => applyLang("en");
-  </script>
+  for(let i=0;i<particles.length;i++){
+    const p = particles[i];
+    p.x += p.vx * (1 + (1-p.z)*0.5);
+    p.y += p.vy * (1 + (1-p.z)*0.5);
+
+    if(p.x < -50) p.x = window.innerWidth + 50;
+    if(p.x > window.innerWidth + 50) p.x = -50;
+    if(p.y < -50) p.y = window.innerHeight + 50;
+    if(p.y > window.innerHeight + 50) p.y = -50;
+
+    const parallaxFactor = (1 - p.z);
+    const sx = (p.x - window.innerWidth/2) * (0.5 + 0.8*p.z) + cx + mouseX*90*parallaxFactor*DPR;
+    const syRaw = p.y - window.innerHeight/2;
+    const syScrolled = syRaw + scrollY * 0.12 * (1 + parallaxFactor);
+    const sy = posMod(syScrolled + canvas.height/2, canvas.height);
+
+    const sz = p.size * (1.6 - p.z) * DPR;
+
+    const grad = ctx.createRadialGradient(sx,sy,0,sx,sy,sz*6);
+    grad.addColorStop(0, `rgba(120,220,200,${p.alpha})`);
+    grad.addColorStop(0.45, `rgba(80,170,200,${p.alpha*0.45})`);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(sx - sz*6, sy - sz*6, sz*12, sz*12);
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(200,255,245,${p.alpha})`;
+    ctx.arc(sx,sy,Math.max(0.6,sz*0.6),0,Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ particleCount = Math.round(Math.max(60, Math.min(300, window.innerWidth / 4))); createParticles(); resizeCanvas(); },220); });
+
+/* ==========================
+   Language switcher + text content
+==========================*/
+const texts = {
+  es:{
+    heroSub:"La evolución moderna de la presencia digital para tu marca.",
+    s1Title:"Tu imagen digital es tu nueva carta de presentación",
+    s1Text:"Hoy la gente decide en menos de 3 segundos si tu negocio transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.",
+    servicesTitle:"Servicios digitales",
+    servicesText:`✔ Aumento de seguidores en todas las redes sociales<br>✔ Aumento de engagement (likes, comentarios, visitas a reels y más)<br>✔ Recuperación de cuentas en cualquier plataforma<br>✔ Paquetes mensuales personalizados según tu objetivo<br>✔ Optimización completa de perfiles<br>✔ Auditorías de branding y presencia digital<br>✔ Creación de contenido asistido con IA`,
+    svc1Title:"Aumento de seguidores",
+    svc1Desc:"Crecimiento orgánico y estratégico en todas las plataformas.",
+    svc2Title:"Aumento de engagement",
+    svc2Desc:"Likes, comentarios y vistas enfocadas en tu público objetivo.",
+    svc3Title:"Recuperación de cuentas",
+    svc3Desc:"Recuperamos accesos y protegemos tus perfiles frente a suplantación.",
+    svc4Title:"Paquetes mensuales",
+    svc4Desc:"Planes adaptados a tu etapa: starter, pro y elite.",
+    svc5Title:"Optimización de perfiles",
+    svc5Desc:"Bio, highlights, CTA y estética profesional.",
+    svc6Title:"Contenido asistido con IA",
+    svc6Desc:"Ideas y creatividades optimizadas por IA.",
+    plansHeader:"Planes",
+    plan1Title:"Starter",
+    plan1Desc:"Gestión básica de perfiles + 4 posts semanales.",
+    plan1Price:"$150 / mes",
+    plan2Title:"Pro",
+    plan2Desc:"Crecimiento + branding + reportes (12 posts/mes).",
+    plan2Price:"$450 / mes",
+    plan3Title:"Elite",
+    plan3Desc:"Servicio completo: estrategia, contenido premium y ads.",
+    plan3Price:"$950 / mes",
+    extrasTitle:"Beneficios reales y medibles",
+    extrasText:"✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional"
+  },
+  en:{
+    heroSub:"The modern evolution of your brand's digital presence.",
+    s1Title:"Your digital image is your new business card",
+    s1Text:"People judge your brand in under 3 seconds. A sharp, professional presence instantly builds trust and authority.",
+    servicesTitle:"Digital Services",
+    servicesText:`✔ Growth of followers across all social platforms<br>✔ Engagement boost (likes, comments, reel views & more)<br>✔ Account recovery on any network<br>✔ Monthly packages tailored to your goals<br>✔ Full profile optimization<br>✔ Branding & presence audits<br>✔ AI-assisted content creation`,
+    svc1Title:"Follower growth",
+    svc1Desc:"Organic, strategic growth across platforms.",
+    svc2Title:"Engagement boost",
+    svc2Desc:"Likes, comments and views targeted to your audience.",
+    svc3Title:"Account recovery",
+    svc3Desc:"We recover access and protect your profiles from impersonation.",
+    svc4Title:"Monthly packages",
+    svc4Desc:"Plans for every stage: starter, pro and elite.",
+    svc5Title:"Profile optimization",
+    svc5Desc:"Bio, highlights, CTAs and conversion-focused visuals.",
+    svc6Title:"AI-assisted content",
+    svc6Desc:"Ideas and creatives optimized by AI.",
+    plansHeader:"Plans",
+    plan1Title:"Starter",
+    plan1Desc:"Basic profile management + 4 posts/week.",
+    plan1Price:"$150 / mo",
+    plan2Title:"Pro",
+    plan2Desc:"Accelerated growth + branding + reports (12 posts/month).",
+    plan2Price:"$450 / mo",
+    plan3Title:"Elite",
+    plan3Desc:"Full-service: strategy, premium content and ads.",
+    plan3Price:"$950 / mo",
+    extrasTitle:"Real, measurable results",
+    extrasText:"✔ Stronger brand authority<br>✔ Higher engagement<br>✔ Better reach and positioning<br>✔ Emotional connection"
+  }
+};
+
+function applyLang(lang){
+  document.getElementById('hero-sub').innerHTML = texts[lang].heroSub;
+  document.getElementById('s1-title').innerHTML = texts[lang].s1Title;
+  document.getElementById('s1-text').innerHTML = texts[lang].s1Text;
+
+  document.getElementById('services-title').innerHTML = texts[lang].servicesTitle;
+  document.getElementById('services-text').innerHTML = texts[lang].servicesText;
+
+  document.getElementById('svc1-title').innerHTML = texts[lang].svc1Title;
+  document.getElementById('svc1-desc').innerHTML = texts[lang].svc1Desc;
+  document.getElementById('svc2-title').innerHTML = texts[lang].svc2Title;
+  document.getElementById('svc2-desc').innerHTML = texts[lang].svc2Desc;
+  document.getElementById('svc3-title').innerHTML = texts[lang].svc3Title;
+  document.getElementById('svc3-desc').innerHTML = texts[lang].svc3Desc;
+  document.getElementById('svc4-title').innerHTML = texts[lang].svc4Title;
+  document.getElementById('svc4-desc').innerHTML = texts[lang].svc4Desc;
+  document.getElementById('svc5-title').innerHTML = texts[lang].svc5Title;
+  document.getElementById('svc5-desc').innerHTML = texts[lang].svc5Desc;
+  document.getElementById('svc6-title').innerHTML = texts[lang].svc6Title;
+  document.getElementById('svc6-desc').innerHTML = texts[lang].svc6Desc;
+
+  document.querySelectorAll('.plan')[0].querySelector('h3').innerHTML = texts[lang].plan1Title;
+  document.querySelectorAll('.plan')[0].querySelector('p').innerHTML = texts[lang].plan1Desc;
+  document.querySelectorAll('.plan')[0].querySelector('.price').innerHTML = texts[lang].plan1Price;
+
+  document.querySelectorAll('.plan')[1].querySelector('h3').innerHTML = texts[lang].plan2Title;
+  document.querySelectorAll('.plan')[1].querySelector('p').innerHTML = texts[lang].plan2Desc;
+  document.querySelectorAll('.plan')[1].querySelector('.price').innerHTML = texts[lang].plan2Price;
+
+  document.querySelectorAll('.plan')[2].querySelector('h3').innerHTML = texts[lang].plan3Title;
+  document.querySelectorAll('.plan')[2].querySelector('p').innerHTML = texts[lang].plan3Desc;
+  document.querySelectorAll('.plan')[2].querySelector('.price').innerHTML = texts[lang].plan3Price;
+
+  document.getElementById('s4-title').innerHTML = texts[lang].extrasTitle;
+  document.getElementById('s4-text').innerHTML = texts[lang].extrasText;
+}
+
+// init default spanish
+applyLang('es');
+document.getElementById('switch-es').addEventListener('click', ()=>applyLang('es'));
+document.getElementById('switch-en').addEventListener('click', ()=>applyLang('en'));
+
+/* tiny accessibility: keyboard toggle */
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='e') applyLang('en');
+  if(e.key==='s') applyLang('es');
+});
+
+/* Hover tilt for plans (simple) */
+document.querySelectorAll('.plan').forEach(el=>{
+  el.addEventListener('mousemove', (ev)=>{
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width/2;
+    const cy = r.top + r.height/2;
+    const dx = ev.clientX - cx;
+    const dy = ev.clientY - cy;
+    el.style.transform = `perspective(800px) rotateX(${(-dy/20)}deg) rotateY(${(dx/20)}deg) scale(1.03)`;
+  });
+  el.addEventListener('mouseleave', ()=>{ el.style.transform='translateY(-8px)'; });
+});
+</script>
 
 </body>
 </html>
