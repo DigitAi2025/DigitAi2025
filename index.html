@@ -83,12 +83,6 @@
     header {
       text-align: center;
       padding: 150px 20px 110px;
-      animation: fadeIn 1.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-40px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
     .title {
@@ -106,6 +100,26 @@
       color: #bafff3;
     }
 
+    /* BANDERAS BAJO EL SUBTÍTULO */
+    .flag-switcher {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .flag-switcher img {
+      width: 48px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: 0.25s;
+      box-shadow: 0 0 14px rgba(255,255,255,0.25);
+    }
+
+    .flag-switcher img:hover {
+      transform: scale(1.12);
+    }
+
     section {
       max-width: 1100px;
       margin: 70px auto;
@@ -114,13 +128,7 @@
       border: 1px solid rgba(0,255,200,0.18);
       border-radius: 18px;
       backdrop-filter: blur(18px);
-      animation: slideUp 1.2s ease;
       box-shadow: 0 0 40px rgba(0,255,200,0.07);
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(60px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
@@ -143,29 +151,6 @@
       font-size: 16px;
       border-top: 1px solid rgba(0,255,200,0.12);
     }
-
-    /* === BANDERAS IDIOMA === */
-    .language-switcher {
-      position: fixed;
-      top: 30px;
-      right: 30px;
-      z-index: 100;
-      display: flex;
-      gap: 16px;
-    }
-
-    .language-switcher img {
-      width: 45px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: 0.25s;
-      box-shadow: 0 0 12px rgba(255,255,255,0.25);
-    }
-
-    .language-switcher img:hover {
-      transform: scale(1.1);
-    }
-
   </style>
 </head>
 
@@ -174,18 +159,18 @@
   <div class="holo-bg"></div>
   <div class="grid-bg"></div>
 
-  <!-- MUCHAS PARTÍCULAS -->
+  <!-- PARTÍCULAS -->
   <div class="particles" id="particles"></div>
-
-  <!-- BANDERAS -->
-  <div class="language-switcher">
-    <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
-    <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
-  </div>
 
   <header>
     <h1 class="title" id="hero-title">DigitAI</h1>
     <p class="subtitle" id="hero-sub">La evolución moderna de la presencia digital para tu marca.</p>
+
+    <!-- BANDERAS DE IDIOMA -->
+    <div class="flag-switcher">
+      <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
+      <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
+    </div>
   </header>
 
   <section>
@@ -221,11 +206,11 @@
 
   <footer>DigitAI © 2025 — Presencia digital inteligente.</footer>
 
-  <!-- === SCRIPT PARTÍCULAS Y TRADUCCIÓN === -->
+  <!-- === SCRIPT PARTICULAS + IDIOMAS === -->
   <script>
-    /* ==============================
-       GENERADOR DE MUCHAS PARTÍCULAS
-    =============================== */
+    /* ============================
+       GENERAR MUCHAS PARTÍCULAS
+    ============================ */
     const particleContainer = document.getElementById("particles");
     const totalParticles = 70;
 
@@ -233,27 +218,25 @@
       const particle = document.createElement("span");
       particle.classList.add("particle");
 
-      let x = Math.random() * 100;
-      let y = Math.random() * 100;
-
-      particle.style.left = x + "%";
-      particle.style.top = y + "%";
+      particle.style.left = Math.random() * 100 + "%";
+      particle.style.top = Math.random() * 100 + "%";
       particle.style.animationDelay = (Math.random() * 6) + "s";
+
       particleContainer.appendChild(particle);
     }
 
-    /* PARALLAX SUAVE CUANDO SCROLLEÁS */
+    /* PARALLAX SCROLL — 70% MÁS MOVIMIENTO */
     window.addEventListener("scroll", () => {
       const value = window.scrollY * 0.02;
-      particleContainer.style.transform = `translateY(${value}px)`;
+      particleContainer.style.transform = `translateY(${value * 1.7}px)`;
     });
 
-    /* =====================================
-       SISTEMA MULTI-LENGUAJE COMPLETO
-    ===================================== */
+
+    /* ============================
+       SISTEMA DE IDIOMAS COMPLETO
+    ============================ */
     const lang = {
       es: {
-        heroTitle: "DigitAI",
         heroSub: "La evolución moderna de la presencia digital para tu marca.",
         s1Title: "Tu imagen digital es tu nueva carta de presentación",
         s1Text: "Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.",
@@ -266,22 +249,19 @@
       },
 
       en: {
-        heroTitle: "DigitAI",
         heroSub: "The modern evolution of your brand’s digital presence.",
         s1Title: "Your digital image is your new business card",
         s1Text: "People judge your brand in under 3 seconds. A sharp, professional presence instantly builds trust and authority.",
         s2Title: "Strategy + Aesthetics + Intelligence",
-        s2Text: "Posting isn’t enough anymore. Today it's about understanding user behavior, optimizing content and creating emotional connection.",
+        s2Text: "Posting isn’t enough anymore. Today it's about understanding user behavior, optimizing content, and creating emotional connection.",
         s3Title: "Real, measurable results",
         s3Text: "✔ Stronger brand authority<br>✔ Higher engagement<br>✔ Better reach and positioning<br>✔ Emotional connection",
-        s4Title: "A bold presence that stands out",
-        s4Text: "DigitAI blends futuristic design with smooth animations to elevate your brand to the next level."
+        s4Text: "DigitAI blends futuristic design with smooth animations to elevate your brand to the next level.",
+        s4Title: "A bold presence that stands out"
       }
     };
 
-    /* APLICAR IDIOMA */
     function applyLang(language) {
-      document.getElementById("hero-title").innerHTML = lang[language].heroTitle;
       document.getElementById("hero-sub").innerHTML = lang[language].heroSub;
       document.getElementById("s1-title").innerHTML = lang[language].s1Title;
       document.getElementById("s1-text").innerHTML = lang[language].s1Text;
