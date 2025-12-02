@@ -160,7 +160,11 @@
   <header>
     <h1 class="title">DigitAI</h1>
     <p class="subtitle">La evolución moderna de la presencia digital para tu marca.</p>
-  </header>
+    <div class="language-switcher fixed top-4 right-4 z-50">
+    <button id="switch-en" class="px-3 py-1 bg-purple-600/60 backdrop-blur-md hover:bg-purple-700 text-white rounded-lg">EN</button>
+    <button id="switch-es" class="px-3 py-1 bg-purple-600/60 backdrop-blur-md hover:bg-purple-700 text-white rounded-lg">ES</button>
+  </div>
+</header>
 
   <section>
     <h2>Tu imagen digital es tu nueva carta de presentación</h2>
@@ -189,5 +193,25 @@
     DigitAI © 2025 — Presencia digital inteligente.
   </footer>
 
+  <script>
+    const texts = {
+      es: {
+        heroTitle: "Impulsá tu presencia digital con DigitAI",
+        heroSubtitle: "Tu imagen en redes define cómo te ve el mundo. Y nosotros te ayudamos a potenciarla.",
+      },
+      en: {
+        heroTitle: "Boost your digital presence with DigitAI",
+        heroSubtitle: "Your image on social networks defines how the world sees you. We help you elevate it.",
+      }
+    };
+
+    const applyLang = (lang) => {
+      document.getElementById("hero-title").textContent = texts[lang].heroTitle;
+      document.getElementById("hero-sub").textContent = texts[lang].heroSubtitle;
+    };
+
+    document.getElementById("switch-en").onclick = () => applyLang("en");
+    document.getElementById("switch-es").onclick = () => applyLang("es");
+  </script>
 </body>
 </html>
