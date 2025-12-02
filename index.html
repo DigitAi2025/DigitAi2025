@@ -1,422 +1,371 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DigitAI - Presencia Digital Inteligente</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:'Outfit',sans-serif;
-    background:linear-gradient(180deg,#05060a,#020204);
-    color:#e6f7f2;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    overflow-x:hidden;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DigitAI - Presencia Digital Inteligente</title>
 
-  /* Background layers */
-  .holo-bg{position:fixed;inset:0;z-index:-4;background:
-    radial-gradient(circle at 20% 20%, rgba(0,224,192,0.12), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(80,160,255,0.08), transparent 40%),
-    linear-gradient(135deg,#06070d 0%,#030308 100%);
-    animation:holoMove 20s ease-in-out infinite alternate;}
-  @keyframes holoMove{0%{filter:hue-rotate(0deg) blur(0px)}100%{filter:hue-rotate(22deg) blur(1px)}}
+  <!-- FUENTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  .grid-bg{position:fixed;inset:0;z-index:-3;background-image:
-    linear-gradient(rgba(0,224,192,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,224,192,0.06) 1px, transparent 1px);
-    background-size:60px 60px;animation:gridMove 14s linear infinite;opacity:0.75}
-  @keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(-60px)}}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
 
-  /* Particle canvas */
-  #particle-canvas{position:fixed;inset:0;z-index:-2;pointer-events:none}
+    body {
+      background: #05060a;
+      color: #e6e6e6;
+      overflow-x: hidden;
+    }
 
-  /* Header */
-  header{max-width:1100px;margin:30px auto 10px;padding:36px 20px 8px;text-align:center}
-  .logo{width:260px;height:auto;margin:10px auto 6px;display:block;filter:drop-shadow(0 18px 40px rgba(0,224,192,0.08))}
-  .title{font-size:56px;font-weight:800;background:linear-gradient(90deg,#00e0c0,#62fff2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 28px rgba(0,224,192,0.12)}
-  .subtitle{margin-top:8px;font-size:18px;color:#c8fff5;opacity:0.95}
+    .holo-bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,200,0.18), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(0,140,255,0.18), transparent 50%),
+                  linear-gradient(135deg, #06070d 0%, #030308 100%);
+      animation: holoMove 18s ease-in-out infinite alternate;
+      z-index: -3;
+    }
 
-  /* flags under subtitle */
-  .flag-switcher{display:flex;justify-content:center;gap:18px;margin-top:18px}
-  .flag-switcher img{width:44px;height:auto;border-radius:6px;cursor:pointer;transition:transform .18s,box-shadow .18s;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-  .flag-switcher img:hover{transform:scale(1.12);box-shadow:0 14px 40px rgba(0,224,192,0.18)}
+    @keyframes holoMove {
+      0% { filter: hue-rotate(0deg) blur(0px); }
+      100% { filter: hue-rotate(25deg) blur(1px); }
+    }
 
-  /* sections */
-  .container{max-width:1100px;margin:30px auto;padding:0 20px}
-  section.card{background:rgba(8,12,16,0.6);border:1px solid rgba(0,224,192,0.12);border-radius:14px;padding:30px;margin:26px 0;backdrop-filter:blur(12px);box-shadow:0 12px 48px rgba(0,0,0,0.6);transition:transform .28s}
-  section.card:hover{transform:translateY(-8px)}
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,255,200,0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,200,0.08) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 12s linear infinite;
+      z-index: -2;
+    }
 
-  h2{font-size:28px;color:#00e0c0;margin-bottom:12px}
-  p{color:#dff7f1;line-height:1.7;font-size:16px}
+    @keyframes gridMove {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-60px); }
+    }
 
-  /* services icons list */
-  .services-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
-  .service{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(0,224,192,0.03);transition:transform .22s}
-  .service:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,224,192,0.06)}
-  .svc-icon{width:40px;height:40px;flex:0 0 40px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.25);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-  .svc-title{font-weight:600;color:#e8fffb}
+    .particles span {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #00e0c0;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00e0c0;
+      animation: float 6s infinite ease-in-out;
+      opacity: .55;
+    }
 
-  /* plans */
-  .plans{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:12px}
-  .plan{width:300px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(255,255,255,0.02));border:1px solid rgba(0,224,192,0.06);transition:transform .28s}
-  .plan:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 18px 50px rgba(0,224,192,0.12)}
-  .plan h3{color:#62fff2;margin-bottom:6px}
-  .plan p{font-size:15px;color:#def7f1}
-  .plan .price{font-size:22px;color:#00e0c0;margin-top:10px}
+    @keyframes float {
+      0% { transform: translateY(0); opacity: .4; }
+      50% { transform: translateY(-80px); opacity: 1; }
+      100% { transform: translateY(0); opacity: .4; }
+    }
 
-  /* footer */
-  footer{max-width:1100px;margin:40px auto 80px;padding:22px 20px;text-align:center;color:#9fbfb7;font-size:14px}
+    header {
+      text-align: center;
+      padding: 150px 20px;
+      animation: fadeIn 1.4s ease;
+    }
 
-  @media (max-width:700px){
-    .title{font-size:40px}
-    .logo{width:200px}
-    .flag-switcher img{width:36px}
-    .plan{width:100%}
-  }
-</style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      font-size: 74px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00e0c0, #62fff2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 35px rgba(0,255,200,0.25);
+    }
+
+    .subtitle {
+      margin-top: 18px;
+      font-size: 24px;
+      color: #bafff3;
+      opacity: 0.9;
+    }
+
+    .language-switcher {
+      margin-top: 25px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .flag-btn {
+      width: 50px;
+      height: 35px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid #00e0c0;
+      box-shadow: 0 0 12px rgba(0,255,200,0.4);
+      transition: all 0.3s;
+    }
+
+    .flag-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 18px rgba(0,255,200,0.8);
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 70px auto;
+      padding: 45px;
+      background: rgba(10,15,20,0.55);
+      border: 1px solid rgba(0,255,200,0.18);
+      border-radius: 18px;
+      backdrop-filter: blur(18px);
+      animation: slideUp 1.2s ease;
+      box-shadow: 0 0 40px rgba(0,255,200,0.07);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(60px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 34px;
+      color: #00e0c0;
+      margin-bottom: 16px;
+      text-shadow: 0 0 15px rgba(0,255,200,0.25);
+      font-weight: 700;
+    }
+
+    .services-list p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .plans {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .plan {
+      flex: 1;
+      min-width: 280px;
+      padding: 25px;
+      background: rgba(5, 10, 15, 0.6);
+      border: 1px solid rgba(0,255,200,0.25);
+      border-radius: 16px;
+      transition: 0.3s;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(0,255,200,0.15);
+    }
+
+    .plan:hover {
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 0 28px rgba(0,255,200,0.5);
+    }
+
+    .price {
+      margin-top: 14px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #62fff2;
+    }
+
+    footer {
+      text-align: center;
+      padding: 70px 20px;
+      color: #888;
+      font-size: 16px;
+      margin-top: 120px;
+      border-top: 1px solid rgba(0,255,200,0.12);
+    }
+  </style>
 </head>
+
 <body>
+  <div class="holo-bg"></div>
+  <div class="grid-bg"></div>
 
-<div class="holo-bg"></div>
-<div class="grid-bg"></div>
-<canvas id="particle-canvas"></canvas>
-
-<header>
-  <img class="logo" id="logo-img" src="https://dummyimage.com/800x240/00e0c0/04151a.png&text=DigitAI+3D+Logo+(Placeholder)" alt="DigitAI Logo">
-  <div class="title" id="hero-title">DigitAI</div>
-  <div class="subtitle" id="hero-sub">La evolución moderna de la presencia digital para tu marca.</div>
-
-  <div class="flag-switcher" aria-hidden="false">
-    <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
-    <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
+  <div class="particles">
+    <span style="top:20%; left:25%; animation-delay:1s;"></span>
+    <span style="top:50%; left:70%; animation-delay:2.3s;"></span>
+    <span style="top:75%; left:40%; animation-delay:3.1s;"></span>
+    <span style="top:30%; left:85%; animation-delay:4s;"></span>
+    <span style="top:60%; left:10%; animation-delay:5s;"></span>
+    <span style="top:15%; left:55%; animation-delay:1.5s;"></span>
+    <span style="top:82%; left:20%; animation-delay:2.9s;"></span>
   </div>
-</header>
 
-<div class="container">
-  <section class="card" id="intro">
-    <h2 id="s1-title">Tu imagen digital es tu nueva carta de presentación</h2>
-    <p id="s1-text">Hoy la gente decide en menos de 3 segundos si tu negocio transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.</p>
+  <header>
+    <h1 class="title">DigitAI</h1>
+    <p class="subtitle" id="hero-sub">La evolución moderna de la presencia digital para tu marca.</p>
+
+    <div class="language-switcher">
+      <img src="https://flagcdn.com/w40/es.png" class="flag-btn" id="switch-es">
+      <img src="https://flagcdn.com/w40/us.png" class="flag-btn" id="switch-en">
+    </div>
+  </header>
+
+  <section>
+    <h2 id="sec1-title">Tu imagen digital es tu nueva carta de presentación</h2>
+    <p id="sec1-text">
+      Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional, un mensaje claro y una presencia sólida pueden transformar tu marca en una autoridad instantánea.
+    </p>
   </section>
 
-  <section class="card" id="services">
-    <h2 id="services-title">Servicios digitales</h2>
+  <section>
+    <h2 id="services-title">Servicios Digitales</h2>
 
-    <div class="services-list">
-      <div class="service">
-        <div class="svc-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2c.6 0 1.19.13 1.74.38.29.13.61.2.93.2.37 0 .72-.11 1.03-.32.51-.36 1.18-.24 1.5.28.09.16.16.34.18.53.08.62-.09 1.6-.46 2.28-.25.45-.71.89-1.26 1.36-.81.68-1.74 1.28-2.65 1.75-.74.38-1.45.68-2 .85v3.3c0 .55-.45 1-1 1H7.6c-.05 0-.1-.01-.15-.03-.42-.12-.8-.32-1.11-.59-.3-.26-.55-.58-.72-.95-.25-.55-.39-1.2-.39-1.95 0-.55.45-1 1-1h3.3c.17-.55.47-1.26.85-2 .47-.91 1.07-1.84 1.75-2.65.47-.55.87-1.01 1.36-1.26.68-.37 1.66-.54 2.28-.46.19.02.37.09.53.18.52.32.64.99.28 1.5-.21.31-.32.66-.32 1.03 0 .32.07.64.2.93.25.55.38 1.14.38 1.74z" fill="#00e0c0"/></svg>
-        </div>
-        <div>
-          <div class="svc-title" id="svc1-title">Aumento de seguidores</div>
-          <div class="svc-desc" id="svc1-desc">Crecimiento orgánico y estratégico en todas las plataformas.</div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="svc-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 17v4h4l11-11-4-4L3 17z" fill="#62fff2"/></svg>
-        </div>
-        <div>
-          <div class="svc-title" id="svc2-title">Aumento de engagement</div>
-          <div class="svc-desc" id="svc2-desc">Likes, comentarios y vistas enfocadas en tu público objetivo.</div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="svc-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" fill="#9b5cff"/></svg>
-        </div>
-        <div>
-          <div class="svc-title" id="svc3-title">Recuperación de cuentas</div>
-          <div class="svc-desc" id="svc3-desc">Recuperamos accesos y protegemos tus perfiles frente a suplantación.</div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="svc-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" fill="#00e0c0"/></svg>
-        </div>
-        <div>
-          <div class="svc-title" id="svc4-title">Paquetes mensuales</div>
-          <div class="svc-desc" id="svc4-desc">Planes adaptados a tu etapa: starter, pro y elite.</div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="svc-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v2H4zM4 10h10v2H4zM4 16h16v2H4z" fill="#62fff2"/></svg>
-        </div>
-        <div>
-          <div class="svc-title" id="svc5-title">Optimización de perfiles</div>
-          <div class="svc-desc" id="svc5-desc">Bio, highlights, CTA y estética profesional.</div>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="svc-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" fill="#ffd166" /></svg>
-        </div>
-        <div>
-          <div class="svc-title" id="svc6-title">Contenido asistido con IA</div>
-          <div class="svc-desc" id="svc6-desc">Ideas y creatividades optimizadas por IA.</div>
-        </div>
-      </div>
-
+    <div class="services-list" id="services-list">
+      <p>• Aumento de seguidores reales y segmentados</p>
+      <p>• Aumento de engagement: likes, comentarios, visualizaciones, reels y más</p>
+      <p>• Recuperación de cuentas de todas las redes sociales</p>
+      <p>• Paquetes mensuales personalizados para cada cliente</p>
+      <p>• Estrategias avanzadas de crecimiento digital</p>
     </div>
   </section>
 
-  <section class="card" id="plans">
-    <h2>Planes</h2>
-    <div class="plans" role="list">
-      <div class="plan" role="listitem" tabindex="0">
-        <h3>Starter</h3>
-        <p>Gestión básica de perfiles + 4 posts semanales.</p>
-        <div class="price">$150 / mes</div>
+  <section id="plans">
+    <h2 id="plans-title">Planes</h2>
+
+    <div class="plans">
+
+      <div class="plan">
+        <h3 id="plan1-title">Starter</h3>
+        <p id="plan1-desc">Gestión básica + 1 post semanal.</p>
+        <div class="price" id="plan1-price">$150 / mes</div>
       </div>
 
-      <div class="plan" role="listitem" tabindex="0">
-        <h3>Pro</h3>
-        <p>Crecimiento + branding + 12 posts/mes + reportes.</p>
-        <div class="price">$450 / mes</div>
+      <div class="plan">
+        <h3 id="plan2-title">Pro</h3>
+        <p id="plan2-desc">Crecimiento acelerado + 2 posts semanales + 1 reel.</p>
+        <div class="price" id="plan2-price">$450 / mes</div>
       </div>
 
-      <div class="plan" role="listitem" tabindex="0">
-        <h3>Elite</h3>
-        <p>Servicio completo: estrategia, contenido premium y ads.</p>
-        <div class="price">$950 / mes</div>
+      <div class="plan">
+        <h3 id="plan3-title">Elite</h3>
+        <p id="plan3-desc">Servicio completo + 3 posts semanales + 2 reels.</p>
+        <div class="price" id="plan3-price">$950 / mes</div>
       </div>
+
     </div>
+
+    <p id="plans-security" style="margin-top:20px; font-size:17px; color:#c8fff5;">
+      🔒 Incluimos protección avanzada contra shadowbans, caídas de perfil y pérdida de alcance.
+    </p>
   </section>
 
-  <section class="card" id="extras">
-    <h2 id="s4-title">Beneficios reales y medibles</h2>
-    <p id="s4-text">✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional</p>
-  </section>
+  <footer>
+    DigitAI © 2025 — Presencia digital inteligente.
+  </footer>
 
-</div>
+  <script>
+    const texts = {
+      es: {
+        heroSub: "La evolución moderna de la presencia digital para tu marca.",
 
-<footer>DigitAI © 2025 — Presencia digital inteligente.</footer>
+        sec1Title: "Tu imagen digital es tu nueva carta de presentación",
+        sec1Text:
+          "Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional, un mensaje claro y una presencia sólida pueden transformar tu marca en una autoridad instantánea.",
 
-<script>
-/* ==========================
-   Particle canvas (JS)
-   70% stronger vertical parallax on scroll
-   lightweight, performant
-==========================*/
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-let DPR = Math.min(window.devicePixelRatio || 1, 2);
-function resizeCanvas(){
-  DPR = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.floor(window.innerWidth * DPR);
-  canvas.height = Math.floor(window.innerHeight * DPR);
-  canvas.style.width = window.innerWidth + 'px';
-  canvas.style.height = window.innerHeight + 'px';
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+        servicesTitle: "Servicios Digitales",
+        servicesList: `
+          • Aumento de seguidores reales y segmentados<br>
+          • Aumento de engagement: likes, comentarios, visualizaciones y reels<br>
+          • Recuperación de cuentas de todas las redes<br>
+          • Paquetes mensuales personalizados<br>
+          • Estrategias avanzadas de crecimiento digital
+        `,
 
-let particles = [];
-let particleCount = Math.round(Math.max(60, Math.min(260, window.innerWidth / 5)));
+        plansTitle: "Planes",
 
-function rand(min,max){ return Math.random()*(max-min)+min; }
-function createParticles(){
-  particles = [];
-  for(let i=0;i<particleCount;i++){
-    particles.push({
-      x: rand(-window.innerWidth, window.innerWidth*2),
-      y: rand(-window.innerHeight, window.innerHeight*2),
-      z: rand(0.15,1.0),
-      size: rand(0.8,3.2),
-      alpha: rand(0.12,0.9),
-      vx: rand(-0.03,0.03),
-      vy: rand(-0.03,0.03)
-    });
-  }
-}
-createParticles();
+        plan1Title: "Starter",
+        plan1Desc: "Gestión básica + 1 post semanal.",
+        plan1Price: "$150 / mes",
 
-let scrollY = 0, targetScrollY = 0, mouseX = 0, mouseY = 0;
-window.addEventListener('scroll', ()=>{ targetScrollY = window.scrollY || window.pageYOffset; });
-window.addEventListener('mousemove', e=>{ mouseX = (e.clientX - window.innerWidth/2)/(window.innerWidth/2); mouseY = (e.clientY - window.innerHeight/2)/(window.innerHeight/2); });
+        plan2Title: "Pro",
+        plan2Desc: "Crecimiento acelerado + 2 posts semanales + 1 reel.",
+        plan2Price: "$450 / mes",
 
-function posMod(n,m){ return ((n % m) + m) % m; }
+        plan3Title: "Elite",
+        plan3Desc: "Servicio completo + 3 posts semanales + 2 reels.",
+        plan3Price: "$950 / mes",
 
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  scrollY += (targetScrollY - scrollY) * 0.12;
-  const cx = canvas.width/2;
-  const cy = canvas.height/2 + scrollY * DPR * -0.06; // small camera shift
+        plansSecurity:
+          "🔒 Incluimos protección avanzada contra shadowbans, caídas de perfil y pérdida de alcance.",
+      },
 
-  for(let i=0;i<particles.length;i++){
-    const p = particles[i];
-    p.x += p.vx * (1 + (1-p.z)*0.5);
-    p.y += p.vy * (1 + (1-p.z)*0.5);
+      en: {
+        heroSub: "The modern evolution of your brand’s digital presence.",
 
-    if(p.x < -50) p.x = window.innerWidth + 50;
-    if(p.x > window.innerWidth + 50) p.x = -50;
-    if(p.y < -50) p.y = window.innerHeight + 50;
-    if(p.y > window.innerHeight + 50) p.y = -50;
+        sec1Title: "Your digital image is your new business card",
+        sec1Text:
+          "People decide in less than 3 seconds if your business looks trustworthy. A professional aesthetic, a clear message and a strong presence can instantly turn your brand into an authority.",
 
-    const parallaxFactor = (1 - p.z);
-    const sx = (p.x - window.innerWidth/2) * (0.5 + 0.8*p.z) + cx + mouseX*90*parallaxFactor*DPR;
-    const syRaw = p.y - window.innerHeight/2;
-    const syScrolled = syRaw + scrollY * 0.12 * (1 + parallaxFactor);
-    const sy = posMod(syScrolled + canvas.height/2, canvas.height);
+        servicesTitle: "Digital Services",
+        servicesList: `
+          • Growth of real, targeted followers<br>
+          • Engagement boost: likes, comments, views and reels<br>
+          • Account recovery across all platforms<br>
+          • Monthly packages tailored to each client<br>
+          • Advanced digital growth strategies
+        `,
 
-    const sz = p.size * (1.6 - p.z) * DPR;
+        plansTitle: "Plans",
 
-    const grad = ctx.createRadialGradient(sx,sy,0,sx,sy,sz*6);
-    grad.addColorStop(0, `rgba(120,220,200,${p.alpha})`);
-    grad.addColorStop(0.45, `rgba(80,170,200,${p.alpha*0.45})`);
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
+        plan1Title: "Starter",
+        plan1Desc: "Basic management + 1 weekly post.",
+        plan1Price: "$150 / mo",
 
-    ctx.fillStyle = grad;
-    ctx.fillRect(sx - sz*6, sy - sz*6, sz*12, sz*12);
+        plan2Title: "Pro",
+        plan2Desc: "Accelerated growth + 2 weekly posts + 1 reel.",
+        plan2Price: "$450 / mo",
 
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(200,255,245,${p.alpha})`;
-    ctx.arc(sx,sy,Math.max(0.6,sz*0.6),0,Math.PI*2);
-    ctx.fill();
-  }
-  requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ particleCount = Math.round(Math.max(60, Math.min(300, window.innerWidth / 4))); createParticles(); resizeCanvas(); },220); });
+        plan3Title: "Elite",
+        plan3Desc: "Full-service package + 3 weekly posts + 2 reels.",
+        plan3Price: "$950 / mo",
 
-/* ==========================
-   Language switcher + text content
-==========================*/
-const texts = {
-  es:{
-    heroSub:"La evolución moderna de la presencia digital para tu marca.",
-    s1Title:"Tu imagen digital es tu nueva carta de presentación",
-    s1Text:"Hoy la gente decide en menos de 3 segundos si tu negocio transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.",
-    servicesTitle:"Servicios digitales",
-    servicesText:`✔ Aumento de seguidores en todas las redes sociales<br>✔ Aumento de engagement (likes, comentarios, visitas a reels y más)<br>✔ Recuperación de cuentas en cualquier plataforma<br>✔ Paquetes mensuales personalizados según tu objetivo<br>✔ Optimización completa de perfiles<br>✔ Auditorías de branding y presencia digital<br>✔ Creación de contenido asistido con IA`,
-    svc1Title:"Aumento de seguidores",
-    svc1Desc:"Crecimiento orgánico y estratégico en todas las plataformas.",
-    svc2Title:"Aumento de engagement",
-    svc2Desc:"Likes, comentarios y vistas enfocadas en tu público objetivo.",
-    svc3Title:"Recuperación de cuentas",
-    svc3Desc:"Recuperamos accesos y protegemos tus perfiles frente a suplantación.",
-    svc4Title:"Paquetes mensuales",
-    svc4Desc:"Planes adaptados a tu etapa: starter, pro y elite.",
-    svc5Title:"Optimización de perfiles",
-    svc5Desc:"Bio, highlights, CTA y estética profesional.",
-    svc6Title:"Contenido asistido con IA",
-    svc6Desc:"Ideas y creatividades optimizadas por IA.",
-    plansHeader:"Planes",
-    plan1Title:"Starter",
-    plan1Desc:"Gestión básica de perfiles + 4 posts semanales.",
-    plan1Price:"$150 / mes",
-    plan2Title:"Pro",
-    plan2Desc:"Crecimiento + branding + reportes (12 posts/mes).",
-    plan2Price:"$450 / mes",
-    plan3Title:"Elite",
-    plan3Desc:"Servicio completo: estrategia, contenido premium y ads.",
-    plan3Price:"$950 / mes",
-    extrasTitle:"Beneficios reales y medibles",
-    extrasText:"✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional"
-  },
-  en:{
-    heroSub:"The modern evolution of your brand's digital presence.",
-    s1Title:"Your digital image is your new business card",
-    s1Text:"People judge your brand in under 3 seconds. A sharp, professional presence instantly builds trust and authority.",
-    servicesTitle:"Digital Services",
-    servicesText:`✔ Growth of followers across all social platforms<br>✔ Engagement boost (likes, comments, reel views & more)<br>✔ Account recovery on any network<br>✔ Monthly packages tailored to your goals<br>✔ Full profile optimization<br>✔ Branding & presence audits<br>✔ AI-assisted content creation`,
-    svc1Title:"Follower growth",
-    svc1Desc:"Organic, strategic growth across platforms.",
-    svc2Title:"Engagement boost",
-    svc2Desc:"Likes, comments and views targeted to your audience.",
-    svc3Title:"Account recovery",
-    svc3Desc:"We recover access and protect your profiles from impersonation.",
-    svc4Title:"Monthly packages",
-    svc4Desc:"Plans for every stage: starter, pro and elite.",
-    svc5Title:"Profile optimization",
-    svc5Desc:"Bio, highlights, CTAs and conversion-focused visuals.",
-    svc6Title:"AI-assisted content",
-    svc6Desc:"Ideas and creatives optimized by AI.",
-    plansHeader:"Plans",
-    plan1Title:"Starter",
-    plan1Desc:"Basic profile management + 4 posts/week.",
-    plan1Price:"$150 / mo",
-    plan2Title:"Pro",
-    plan2Desc:"Accelerated growth + branding + reports (12 posts/month).",
-    plan2Price:"$450 / mo",
-    plan3Title:"Elite",
-    plan3Desc:"Full-service: strategy, premium content and ads.",
-    plan3Price:"$950 / mo",
-    extrasTitle:"Real, measurable results",
-    extrasText:"✔ Stronger brand authority<br>✔ Higher engagement<br>✔ Better reach and positioning<br>✔ Emotional connection"
-  }
-};
+        plansSecurity:
+          "🔒 Includes advanced protection against shadowbans, profile drops and loss of reach.",
+      }
+    };
 
-function applyLang(lang){
-  document.getElementById('hero-sub').innerHTML = texts[lang].heroSub;
-  document.getElementById('s1-title').innerHTML = texts[lang].s1Title;
-  document.getElementById('s1-text').innerHTML = texts[lang].s1Text;
+    function applyLang(l) {
+      const t = texts[l];
 
-  document.getElementById('services-title').innerHTML = texts[lang].servicesTitle;
-  document.getElementById('services-text').innerHTML = texts[lang].servicesText;
+      document.getElementById("hero-sub").innerHTML = t.heroSub;
+      document.getElementById("sec1-title").innerHTML = t.sec1Title;
+      document.getElementById("sec1-text").innerHTML = t.sec1Text;
 
-  document.getElementById('svc1-title').innerHTML = texts[lang].svc1Title;
-  document.getElementById('svc1-desc').innerHTML = texts[lang].svc1Desc;
-  document.getElementById('svc2-title').innerHTML = texts[lang].svc2Title;
-  document.getElementById('svc2-desc').innerHTML = texts[lang].svc2Desc;
-  document.getElementById('svc3-title').innerHTML = texts[lang].svc3Title;
-  document.getElementById('svc3-desc').innerHTML = texts[lang].svc3Desc;
-  document.getElementById('svc4-title').innerHTML = texts[lang].svc4Title;
-  document.getElementById('svc4-desc').innerHTML = texts[lang].svc4Desc;
-  document.getElementById('svc5-title').innerHTML = texts[lang].svc5Title;
-  document.getElementById('svc5-desc').innerHTML = texts[lang].svc5Desc;
-  document.getElementById('svc6-title').innerHTML = texts[lang].svc6Title;
-  document.getElementById('svc6-desc').innerHTML = texts[lang].svc6Desc;
+      document.getElementById("services-title").innerHTML = t.servicesTitle;
+      document.getElementById("services-list").innerHTML = t.servicesList;
 
-  document.querySelectorAll('.plan')[0].querySelector('h3').innerHTML = texts[lang].plan1Title;
-  document.querySelectorAll('.plan')[0].querySelector('p').innerHTML = texts[lang].plan1Desc;
-  document.querySelectorAll('.plan')[0].querySelector('.price').innerHTML = texts[lang].plan1Price;
+      document.getElementById("plans-title").innerHTML = t.plansTitle;
 
-  document.querySelectorAll('.plan')[1].querySelector('h3').innerHTML = texts[lang].plan2Title;
-  document.querySelectorAll('.plan')[1].querySelector('p').innerHTML = texts[lang].plan2Desc;
-  document.querySelectorAll('.plan')[1].querySelector('.price').innerHTML = texts[lang].plan2Price;
+      document.getElementById("plan1-title").innerHTML = t.plan1Title;
+      document.getElementById("plan1-desc").innerHTML = t.plan1Desc;
+      document.getElementById("plan1-price").innerHTML = t.plan1Price;
 
-  document.querySelectorAll('.plan')[2].querySelector('h3').innerHTML = texts[lang].plan3Title;
-  document.querySelectorAll('.plan')[2].querySelector('p').innerHTML = texts[lang].plan3Desc;
-  document.querySelectorAll('.plan')[2].querySelector('.price').innerHTML = texts[lang].plan3Price;
+      document.getElementById("plan2-title").innerHTML = t.plan2Title;
+      document.getElementById("plan2-desc").innerHTML = t.plan2Desc;
+      document.getElementById("plan2-price").innerHTML = t.plan2Price;
 
-  document.getElementById('s4-title').innerHTML = texts[lang].extrasTitle;
-  document.getElementById('s4-text').innerHTML = texts[lang].extrasText;
-}
+      document.getElementById("plan3-title").innerHTML = t.plan3Title;
+      document.getElementById("plan3-desc").innerHTML = t.plan3Desc;
+      document.getElementById("plan3-price").innerHTML = t.plan3Price;
 
-// init default spanish
-applyLang('es');
-document.getElementById('switch-es').addEventListener('click', ()=>applyLang('es'));
-document.getElementById('switch-en').addEventListener('click', ()=>applyLang('en'));
+      document.getElementById("plans-security").innerHTML = t.plansSecurity;
+    }
 
-/* tiny accessibility: keyboard toggle */
-document.addEventListener('keydown',(e)=>{
-  if(e.key==='e') applyLang('en');
-  if(e.key==='s') applyLang('es');
-});
-
-/* Hover tilt for plans (simple) */
-document.querySelectorAll('.plan').forEach(el=>{
-  el.addEventListener('mousemove', (ev)=>{
-    const r = el.getBoundingClientRect();
-    const cx = r.left + r.width/2;
-    const cy = r.top + r.height/2;
-    const dx = ev.clientX - cx;
-    const dy = ev.clientY - cy;
-    el.style.transform = `perspective(800px) rotateX(${(-dy/20)}deg) rotateY(${(dx/20)}deg) scale(1.03)`;
-  });
-  el.addEventListener('mouseleave', ()=>{ el.style.transform='translateY(-8px)'; });
-});
-</script>
-
+    document.getElementById("switch-es").onclick = () => applyLang("es");
+    document.getElementById("switch-en").onclick = () => applyLang("en");
+  </script>
 </body>
 </html>
