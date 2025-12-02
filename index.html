@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DigitAI - Presencia Digital Inteligente</title>
 
-  <!-- FUENTES -->
+  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -38,7 +38,7 @@
       100% { filter: hue-rotate(25deg) blur(1px); }
     }
 
-    /* === MALLA DIGITAL ANIMADA === */
+    /* === MALLA DIGITAL === */
     .grid-bg {
       position: fixed;
       inset: 0;
@@ -54,22 +54,30 @@
       to   { transform: translateY(-60px); }
     }
 
-    /* partículas */
-    .particles span {
+    /* === PARTÍCULAS DINÁMICAS === */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
       position: absolute;
       width: 6px;
       height: 6px;
       background: #00e0c0;
       border-radius: 50%;
-      box-shadow: 0 0 10px #00e0c0;
-      animation: float 6s infinite ease-in-out;
-      opacity: .55;
+      opacity: 0.5;
+      box-shadow: 0 0 12px #00e0c0;
+      animation: float 6s ease-in-out infinite;
     }
 
     @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-60px); }
-      100% { transform: translateY(0); }
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-40px); }
+      100% { transform: translateY(0px); }
     }
 
     header {
@@ -90,17 +98,14 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 35px rgba(0,255,200,0.25);
-      letter-spacing: 2px;
     }
 
     .subtitle {
       margin-top: 18px;
       font-size: 24px;
       color: #bafff3;
-      opacity: 0.9;
     }
 
-    /* CONTENEDORES */
     section {
       max-width: 1100px;
       margin: 70px auto;
@@ -122,27 +127,24 @@
       font-size: 34px;
       color: #00e0c0;
       margin-bottom: 16px;
-      text-shadow: 0 0 15px rgba(0,255,200,0.25);
-      font-weight: 700;
     }
 
     p {
-      line-height: 1.8;
       font-size: 18px;
       color: #d9d9d9;
-      margin-bottom: 12px;
+      line-height: 1.8;
     }
 
     footer {
       text-align: center;
       padding: 70px 20px;
+      margin-top: 120px;
       color: #888;
       font-size: 16px;
       border-top: 1px solid rgba(0,255,200,0.12);
-      margin-top: 120px;
     }
 
-    /* === SELECTOR IDIOMA === */
+    /* === BANDERAS IDIOMA === */
     .language-switcher {
       position: fixed;
       top: 30px;
@@ -150,21 +152,20 @@
       z-index: 100;
       display: flex;
       gap: 16px;
-      align-items: center;
     }
 
     .language-switcher img {
       width: 45px;
       cursor: pointer;
       border-radius: 6px;
-      transition: 0.2s;
+      transition: 0.25s;
       box-shadow: 0 0 12px rgba(255,255,255,0.25);
     }
 
     .language-switcher img:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 16px rgba(255,255,255,0.35);
     }
+
   </style>
 </head>
 
@@ -173,16 +174,10 @@
   <div class="holo-bg"></div>
   <div class="grid-bg"></div>
 
-  <!-- partículas extra -->
-  <div class="particles">
-    <span style="top:20%; left:25%; animation-delay:1s;"></span>
-    <span style="top:50%; left:70%; animation-delay:2.3s;"></span>
-    <span style="top:75%; left:40%; animation-delay:3.1s;"></span>
-    <span style="top:30%; left:85%; animation-delay:4s;"></span>
-    <span style="top:60%; left:10%; animation-delay:5s;"></span>
-  </div>
+  <!-- MUCHAS PARTÍCULAS -->
+  <div class="particles" id="particles"></div>
 
-  <!-- BANDERAS IDIOMA -->
+  <!-- BANDERAS -->
   <div class="language-switcher">
     <img id="switch-es" src="https://flagcdn.com/es.svg" alt="Español">
     <img id="switch-en" src="https://flagcdn.com/us.svg" alt="English">
@@ -195,44 +190,77 @@
 
   <section>
     <h2 id="s1-title">Tu imagen digital es tu nueva carta de presentación</h2>
-    <p id="s1-text">Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.</p>
+    <p id="s1-text">
+      Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.
+    </p>
   </section>
 
   <section>
     <h2 id="s2-title">Estrategia + Estética + Inteligencia</h2>
-    <p id="s2-text">Publicar ya no alcanza. Hoy se trata de entender el comportamiento del usuario, optimizar contenido y conectar emocionalmente.</p>
+    <p id="s2-text">
+      Publicar ya no alcanza. Hoy se trata de entender el comportamiento del usuario, optimizar contenido y conectar emocionalmente.
+    </p>
   </section>
 
   <section>
     <h2 id="s3-title">Beneficios reales y medibles</h2>
-    <p id="s3-text">✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional</p>
+    <p id="s3-text">
+      ✔ Mayor autoridad visual<br>
+      ✔ Más interacción<br>
+      ✔ Mejor posicionamiento<br>
+      ✔ Conexión emocional
+    </p>
   </section>
 
   <section>
     <h2 id="s4-title">Una presencia épica que destaque</h2>
-    <p id="s4-text">DigitAI combina diseño futurista y animaciones sutiles para llevar tu imagen al próximo nivel.</p>
+    <p id="s4-text">
+      DigitAI combina diseño futurista y animaciones sutiles para llevar tu imagen al próximo nivel.
+    </p>
   </section>
 
-  <footer>
-    DigitAI © 2025 — Presencia digital inteligente.
-  </footer>
+  <footer>DigitAI © 2025 — Presencia digital inteligente.</footer>
 
+  <!-- === SCRIPT PARTÍCULAS Y TRADUCCIÓN === -->
   <script>
-    /* TRADUCCIONES COMPLETAS */
+    /* ==============================
+       GENERADOR DE MUCHAS PARTÍCULAS
+    =============================== */
+    const particleContainer = document.getElementById("particles");
+    const totalParticles = 70;
+
+    for (let i = 0; i < totalParticles; i++) {
+      const particle = document.createElement("span");
+      particle.classList.add("particle");
+
+      let x = Math.random() * 100;
+      let y = Math.random() * 100;
+
+      particle.style.left = x + "%";
+      particle.style.top = y + "%";
+      particle.style.animationDelay = (Math.random() * 6) + "s";
+      particleContainer.appendChild(particle);
+    }
+
+    /* PARALLAX SUAVE CUANDO SCROLLEÁS */
+    window.addEventListener("scroll", () => {
+      const value = window.scrollY * 0.02;
+      particleContainer.style.transform = `translateY(${value}px)`;
+    });
+
+    /* =====================================
+       SISTEMA MULTI-LENGUAJE COMPLETO
+    ===================================== */
     const lang = {
       es: {
         heroTitle: "DigitAI",
         heroSub: "La evolución moderna de la presencia digital para tu marca.",
-
         s1Title: "Tu imagen digital es tu nueva carta de presentación",
         s1Text: "Hoy la gente decide en menos de 3 segundos si tu negocio le transmite confianza. Una estética profesional puede transformar tu marca en una autoridad instantánea.",
-
         s2Title: "Estrategia + Estética + Inteligencia",
         s2Text: "Publicar ya no alcanza. Hoy se trata de entender el comportamiento del usuario, optimizar contenido y conectar emocionalmente.",
-
         s3Title: "Beneficios reales y medibles",
         s3Text: "✔ Mayor autoridad visual<br>✔ Más interacción<br>✔ Mejor posicionamiento<br>✔ Conexión emocional",
-
         s4Title: "Una presencia épica que destaque",
         s4Text: "DigitAI combina diseño futurista y animaciones sutiles para llevar tu imagen al próximo nivel."
       },
@@ -240,39 +268,29 @@
       en: {
         heroTitle: "DigitAI",
         heroSub: "The modern evolution of your brand’s digital presence.",
-
         s1Title: "Your digital image is your new business card",
         s1Text: "People judge your brand in under 3 seconds. A sharp, professional presence instantly builds trust and authority.",
-
         s2Title: "Strategy + Aesthetics + Intelligence",
         s2Text: "Posting isn’t enough anymore. Today it's about understanding user behavior, optimizing content and creating emotional connection.",
-
         s3Title: "Real, measurable results",
         s3Text: "✔ Stronger brand authority<br>✔ Higher engagement<br>✔ Better reach and positioning<br>✔ Emotional connection",
-
         s4Title: "A bold presence that stands out",
         s4Text: "DigitAI blends futuristic design with smooth animations to elevate your brand to the next level."
       }
     };
 
-    /* IDs */
-    const ids = {
-      heroTitle: "hero-title",
-      heroSub: "hero-sub",
-      s1Title: "s1-title",
-      s1Text: "s1-text",
-      s2Title: "s2-title",
-      s2Text: "s2-text",
-      s3Title: "s3-title",
-      s3Text: "s3-text",
-      s4Title: "s4-title",
-      s4Text: "s4-text"
-    };
-
+    /* APLICAR IDIOMA */
     function applyLang(language) {
-      for (const key in ids) {
-        document.getElementById(ids[key]).innerHTML = lang[language][key];
-      }
+      document.getElementById("hero-title").innerHTML = lang[language].heroTitle;
+      document.getElementById("hero-sub").innerHTML = lang[language].heroSub;
+      document.getElementById("s1-title").innerHTML = lang[language].s1Title;
+      document.getElementById("s1-text").innerHTML = lang[language].s1Text;
+      document.getElementById("s2-title").innerHTML = lang[language].s2Title;
+      document.getElementById("s2-text").innerHTML = lang[language].s2Text;
+      document.getElementById("s3-title").innerHTML = lang[language].s3Title;
+      document.getElementById("s3-text").innerHTML = lang[language].s3Text;
+      document.getElementById("s4-title").innerHTML = lang[language].s4Title;
+      document.getElementById("s4-text").innerHTML = lang[language].s4Text;
     }
 
     document.getElementById("switch-es").onclick = () => applyLang("es");
